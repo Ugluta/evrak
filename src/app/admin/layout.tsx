@@ -1,3 +1,5 @@
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LayoutDashboard, FileText, BookOpen, Users, LogOut } from 'lucide-react'
 
@@ -8,7 +10,14 @@ const navItems = [
   { href: '/admin/kullanicilar', label: 'Kullanıcılar', icon: Users },
 ]
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+const ALLOWED_ROLES = ['SUPER_ADMIN', 'ADMIN']
+
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth()
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) {
+    redirect('/giris')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <aside className="w-56 bg-white border-r border-gray-100 shrink-0">
