@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { FileText } from 'lucide-react'
 import { CATEGORY_LABELS, formatDate } from '@/lib/utils'
 
 interface Field {
@@ -130,16 +131,31 @@ export default function SablonDetayPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b border-gray-200 px-4 py-4">
         <div className="max-w-6xl mx-auto flex items-center gap-3">
-          <Link href="/sablonlar" className="text-gray-500 hover:text-gray-700">
+          {/* Site logo — links to home */}
+          <Link href="/" className="flex items-center gap-1.5 shrink-0">
+            <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
+              <FileText className="w-3.5 h-3.5 text-white" />
+            </div>
+            <span className="font-bold text-gray-900 text-sm hidden sm:block">Öğretmen Evrak</span>
+          </Link>
+
+          <div className="w-px h-5 bg-gray-200 shrink-0" />
+
+          {/* Back to templates */}
+          <Link href="/sablonlar" className="text-gray-500 hover:text-gray-700 shrink-0">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
-          <div>
-            <h1 className="text-lg font-bold text-gray-900">{template.title}</h1>
-            <p className="text-sm text-gray-400">{CATEGORY_LABELS[template.category] ?? template.category} &bull; {template.useCount} kullanım</p>
+
+          <div className="min-w-0">
+            <h1 className="text-lg font-bold text-gray-900 truncate">{template.title}</h1>
+            <p className="text-sm text-gray-400">
+              {CATEGORY_LABELS[template.category] ?? template.category} &bull; {template.useCount} kullanım
+            </p>
           </div>
-          <div className="ml-auto flex gap-2">
+
+          <div className="ml-auto flex gap-2 shrink-0">
             <button onClick={handleAiAssist} disabled={aiLoading}
               className="flex items-center gap-1.5 px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 disabled:opacity-50">
               {aiLoading ? (
