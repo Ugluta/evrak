@@ -1,12 +1,15 @@
 'use client'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
-export default function GirisPage() {
+function GirisForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const sifirlanda = searchParams.get('sifre-sifirlanda')
+
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -40,6 +43,12 @@ export default function GirisPage() {
           <p className="text-gray-500 text-sm mt-1">Belgelerinize erişin</p>
         </div>
 
+        {sifirlanda && (
+          <div className="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded-xl mb-4">
+            Şifreniz başarıyla güncellendi. Giriş yapabilirsiniz.
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
@@ -60,7 +69,12 @@ export default function GirisPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Şifre</label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-sm font-medium text-gray-700">Şifre</label>
+              <Link href="/sifremi-unuttum" className="text-xs text-blue-600 hover:underline">
+                Şifremi Unuttum
+              </Link>
+            </div>
             <input
               type="password"
               required
@@ -86,5 +100,17 @@ export default function GirisPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function GirisPage() {
+  return (
+    <Suspense fallback={
+      <div className="w-full max-w-sm">
+        <div className="bg-white rounded-2xl shadow-lg p-8 h-80 animate-pulse" />
+      </div>
+    }>
+      <GirisForm />
+    </Suspense>
   )
 }
