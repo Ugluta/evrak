@@ -12,7 +12,7 @@ interface Field {
 }
 
 const CATEGORIES = [
-  { value: 'DILEKCELER', label: 'Dilekceler' },
+  { value: 'DILEKCELER', label: 'Dilekçeler' },
   { value: 'TUTANAKLAR', label: 'Tutanaklar' },
   { value: 'IZIN_FORMLARI', label: 'İzin Formları' },
   { value: 'ZIMMET', label: 'Zimmet' },
@@ -138,12 +138,12 @@ export default function YeniSablonPage() {
         <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-gray-800">Şablon İçeriği</h2>
-            <p className="text-xs text-gray-400">{{alan_adi}} sözdizimini kullanın</p>
+            <p className="text-xs text-gray-400">{`{{alan_adi}}`} sözdizimini kullanın</p>
           </div>
           <textarea value={form.content} onChange={(e) => set('content', e.target.value)}
             rows={14} required
             className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            placeholder="Şablon metnini buraya yazın...\n\nÖrnek:\nSayın {{okul_muduru}},\nBu dilekce ile {{sebep}} konusunda izin talep etmekteyim.\n\nTarih: {{tarih}}" />
+            placeholder={"Şablon metnini buraya yazın...\n\nÖrnek:\nSayın {{okul_muduru}},\nBu dilekçe ile {{sebep}} konusunda izin talep etmekteyim.\n\nTarih: {{tarih}}"} />
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
