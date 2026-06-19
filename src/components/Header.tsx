@@ -1,7 +1,7 @@
 'use client'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { FileText, User, LogOut, ChevronDown, BookOpen } from 'lucide-react'
+import { FileText, User, LogOut, ChevronDown, BookOpen, Heart } from 'lucide-react'
 import { useState } from 'react'
 
 export function Header() {
@@ -23,9 +23,14 @@ export function Header() {
             <BookOpen className="w-4 h-4" /> Şablonlar
           </Link>
           {session && (
-            <Link href="/belgelerim" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1.5">
-              <FileText className="w-4 h-4" /> Belgelerim
-            </Link>
+            <>
+              <Link href="/belgelerim" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1.5">
+                <FileText className="w-4 h-4" /> Belgelerim
+              </Link>
+              <Link href="/favorilerim" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1.5">
+                <Heart className="w-4 h-4" /> Favorilerim
+              </Link>
+            </>
           )}
         </nav>
 
@@ -43,10 +48,14 @@ export function Header() {
                 <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </button>
               {open && (
-                <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden z-50">
+                <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden z-50">
                   <Link href="/belgelerim" onClick={() => setOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                     <FileText className="w-4 h-4" /> Belgelerim
+                  </Link>
+                  <Link href="/favorilerim" onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                    <Heart className="w-4 h-4" /> Favorilerim
                   </Link>
                   {((session.user as { role?: string })?.role === 'SUPER_ADMIN' ||
                     (session.user as { role?: string })?.role === 'ADMIN') && (

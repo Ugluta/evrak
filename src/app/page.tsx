@@ -1,6 +1,8 @@
 import { db } from '@/lib/db'
+import { auth } from '@/lib/auth'
 import Link from 'next/link'
 import { Header } from '@/components/Header'
+import { FavoriteButton } from '@/components/FavoriteButton'
 import { BookOpen, FileText, ArrowRight, Sparkles, Shield, Zap } from 'lucide-react'
 import { CATEGORY_LABELS } from '@/lib/utils'
 
@@ -11,7 +13,9 @@ const CATEGORY_ICONS: Record<string, string> = {
 }
 
 export default async function HomePage() {
-  const [templateCount, categories, popular] = await Promise.all([
+  const session = await auth()
+
+  const [templateCount, categories, popular, favorites] = await Promise.all([
     db.template.count({ where: { isPublic: true } }),
     db.template.groupBy({
       by: ['category'],
@@ -24,7 +28,15 @@ export default async function HomePage() {
       orderBy: { useCount: 'desc' },
       take: 6,
     }),
+    session?.user?.id
+      ? db.favorite.findMany({
+          where: { userId: session.user.id },
+          select: { templateId: true },
+        })
+      : Promise.resolve([]),
   ])
+
+  const favoriteIds = new Set(favorites.map((f) => f.templateId))
 
   return (
     <div className="min-h-screen bg-white">
@@ -104,20 +116,25 @@ export default async function HomePage() {
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {popular.map((t) => (
-                <Link key={t.id} href={`/sablonlar/${t.slug}`}
-                  className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-blue-100 transition-all">
-                  <div className="flex items-start justify-between gap-2 mb-3">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium">
-                      {CATEGORY_LABELS[t.category] || t.category}
-                    </span>
-                    {t.isPremium && <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full">Premium</span>}
+                <div key={t.id} className="relative group">
+                  <Link href={`/sablonlar/${t.slug}`}
+                    className="block bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-blue-100 transition-all">
+                    <div className="flex items-start justify-between gap-2 mb-3 pr-8">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-medium">
+                        {CATEGORY_LABELS[t.category] || t.category}
+                      </span>
+                      {t.isPremium && <span className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full">Premium</span>}
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-1">{t.title}</h3>
+                    {t.description && <p className="text-xs text-gray-500 line-clamp-2">{t.description}</p>}
+                    <p className="text-xs text-gray-400 mt-3 flex items-center gap-1">
+                      <FileText className="w-3 h-3" /> {t.useCount} kullanım
+                    </p>
+                  </Link>
+                  <div className="absolute top-3 right-3 z-10">
+                    <FavoriteButton templateId={t.id} initialFavorited={favoriteIds.has(t.id)} />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-1">{t.title}</h3>
-                  {t.description && <p className="text-xs text-gray-500 line-clamp-2">{t.description}</p>}
-                  <p className="text-xs text-gray-400 mt-3 flex items-center gap-1">
-                    <FileText className="w-3 h-3" /> {t.useCount} kullanım
-                  </p>
-                </Link>
+                </div>
               ))}
             </div>
           </div>

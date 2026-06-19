@@ -1,6 +1,8 @@
 import { db } from '@/lib/db'
+import { auth } from '@/lib/auth'
 import Link from 'next/link'
 import { CATEGORY_LABELS } from '@/lib/utils'
+import { FavoriteButton } from '@/components/FavoriteButton'
 import type { Metadata } from 'next'
 import type { DocumentCategory } from '@prisma/client'
 
@@ -20,15 +22,26 @@ export default async function SablonlarPage({
     ...(ara && { title: { contains: ara, mode: 'insensitive' as const } }),
   }
 
-  const templates = await db.template.findMany({
-    where,
-    orderBy: { useCount: 'desc' },
-    select: {
-      id: true, slug: true, title: true, category: true,
-      description: true, useCount: true, tags: true, isPremium: true,
-    },
-  })
+  const session = await auth()
 
+  const [templates, favorites] = await Promise.all([
+    db.template.findMany({
+      where,
+      orderBy: { useCount: 'desc' },
+      select: {
+        id: true, slug: true, title: true, category: true,
+        description: true, useCount: true, tags: true, isPremium: true,
+      },
+    }),
+    session?.user?.id
+      ? db.favorite.findMany({
+          where: { userId: session.user.id },
+          select: { templateId: true },
+        })
+      : Promise.resolve([]),
+  ])
+
+  const favoriteIds = new Set(favorites.map((f) => f.templateId))
   const allCategories = Object.entries(CATEGORY_LABELS)
 
   return (
@@ -72,31 +85,36 @@ export default async function SablonlarPage({
         <div className="flex-1">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {templates.map((tmpl) => (
-              <Link key={tmpl.id} href={`/sablonlar/${tmpl.slug}`}
-                className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-blue-200 transition-all">
-                <div className="flex items-start justify-between mb-2">
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
-                    {CATEGORY_LABELS[tmpl.category] ?? tmpl.category}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {tmpl.isPremium && (
-                      <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Premium</span>
-                    )}
-                    <span className="text-xs text-gray-400">{tmpl.useCount} kullanım</span>
+              <div key={tmpl.id} className="relative group">
+                <Link href={`/sablonlar/${tmpl.slug}`}
+                  className="block bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-blue-200 transition-all">
+                  <div className="flex items-start justify-between mb-2 pr-8">
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                      {CATEGORY_LABELS[tmpl.category] ?? tmpl.category}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {tmpl.isPremium && (
+                        <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Premium</span>
+                      )}
+                      <span className="text-xs text-gray-400">{tmpl.useCount} kullanım</span>
+                    </div>
                   </div>
+                  <h3 className="font-semibold text-gray-900 mb-1">{tmpl.title}</h3>
+                  {tmpl.description && (
+                    <p className="text-sm text-gray-500 line-clamp-2">{tmpl.description}</p>
+                  )}
+                  {tmpl.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-3">
+                      {tmpl.tags.slice(0, 3).map((tag) => (
+                        <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </Link>
+                <div className="absolute top-3 right-3 z-10">
+                  <FavoriteButton templateId={tmpl.id} initialFavorited={favoriteIds.has(tmpl.id)} />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-1">{tmpl.title}</h3>
-                {tmpl.description && (
-                  <p className="text-sm text-gray-500 line-clamp-2">{tmpl.description}</p>
-                )}
-                {tmpl.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-3">
-                    {tmpl.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </Link>
+              </div>
             ))}
           </div>
           {templates.length === 0 && (
