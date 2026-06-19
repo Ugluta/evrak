@@ -57,6 +57,10 @@ export function Header() {
                     className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                     <Heart className="w-4 h-4" /> Favorilerim
                   </Link>
+                  <Link href="/profil" onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                    <User className="w-4 h-4" /> Profilim
+                  </Link>
                   {((session.user as { role?: string })?.role === 'SUPER_ADMIN' ||
                     (session.user as { role?: string })?.role === 'ADMIN') && (
                     <Link href="/admin" onClick={() => setOpen(false)}
