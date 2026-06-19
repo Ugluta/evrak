@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Providers } from '@/components/Providers'
 
 export const metadata: Metadata = {
   title: { default: 'Evrak | Öğretmen Evrak', template: '%s | Öğretmen Evrak' },
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr">
-      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">{children}</body>
+      <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
