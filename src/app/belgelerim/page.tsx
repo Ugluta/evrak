@@ -1,7 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Header } from '@/components/Header'
 import { FileText, Plus, Download, Trash2, Eye, Clock } from 'lucide-react'
 import { CATEGORY_LABELS, formatDate } from '@/lib/utils'
 
@@ -34,14 +36,20 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function BelgelerimPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [docs, setDocs] = useState<Document[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (status === 'unauthenticated') router.push('/giris?next=/belgelerim')
+  }, [status, router])
+
+  useEffect(() => {
+    if (status !== 'authenticated') return
     fetch('/api/belgelerim')
       .then((r) => r.json())
       .then((d) => { setDocs(d.docs || []); setLoading(false) })
-  }, [])
+  }, [status])
 
   const handleDelete = async (id: string) => {
     if (!confirm('Bu belgeyi silmek istediğinizden emin misiniz?')) return
@@ -51,6 +59,7 @@ export default function BelgelerimPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Header />
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -60,7 +69,7 @@ export default function BelgelerimPage() {
             <div>
               <h1 className="text-xl font-bold text-gray-900">Belgelerim</h1>
               <p className="text-xs text-gray-500">
-                {session?.user?.name || 'Misafir'} — {docs.length} belge
+                {session?.user?.name || 'Yükleniyor...'} — {docs.length} belge
               </p>
             </div>
           </div>
@@ -99,7 +108,9 @@ export default function BelgelerimPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[doc.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                        STATUS_COLORS[doc.status] || 'bg-gray-100 text-gray-600'
+                      }`}>
                         {STATUS_LABELS[doc.status] || doc.status}
                       </span>
                       <span className="text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
