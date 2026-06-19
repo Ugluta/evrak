@@ -1,7 +1,7 @@
 'use client'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { FileText, User, LogOut, ChevronDown, BookOpen, Heart, ScanText } from 'lucide-react'
+import { FileText, User, LogOut, ChevronDown, BookOpen, Heart, ScanText, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 
 export function Header() {
@@ -33,6 +33,9 @@ export function Header() {
               <Link href="/ocr" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1.5">
                 <ScanText className="w-4 h-4" /> OCR
               </Link>
+              <Link href="/belge-olustur" className="text-sm text-purple-600 hover:text-purple-700 flex items-center gap-1.5 font-medium">
+                <Sparkles className="w-4 h-4" /> AI Belge
+              </Link>
             </>
           )}
         </nav>
@@ -63,6 +66,10 @@ export function Header() {
                   <Link href="/ocr" onClick={() => setOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700">
                     <ScanText className="w-4 h-4" /> OCR Aracı
+                  </Link>
+                  <Link href="/belge-olustur" onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700">
+                    <Sparkles className="w-4 h-4" /> AI Belge Oluştur
                   </Link>
                   <Link href="/profil" onClick={() => setOpen(false)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
