@@ -15,6 +15,7 @@ export default function KayitPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'MEMBER' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -107,9 +108,30 @@ export default function KayitPage() {
             </select>
           </div>
 
+          <div className="flex items-start gap-2.5 pt-1">
+            <input
+              type="checkbox"
+              id="terms"
+              required
+              checked={termsAccepted}
+              onChange={(e) => setTermsAccepted(e.target.checked)}
+              className="mt-0.5 w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+            />
+            <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
+              <Link href="/kullanim-kosullari" className="text-blue-600 hover:underline" target="_blank">
+                Kullanım Koşulları
+              </Link>
+              {' '}ve{' '}
+              <Link href="/gizlilik" className="text-blue-600 hover:underline" target="_blank">
+                Gizlilik Politikası
+              </Link>
+              &apos;nı okudum ve kabul ediyorum.
+            </label>
+          </div>
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !termsAccepted}
             className="w-full h-11 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
             {loading ? 'Hesap oluşturuluyor…' : 'Kayıt Ol'}
