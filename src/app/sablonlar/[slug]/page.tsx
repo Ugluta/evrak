@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { FileText } from 'lucide-react'
 import { CATEGORY_LABELS, formatDate } from '@/lib/utils'
+import { Header } from '@/components/Header'
 
 interface Field {
   name: string
@@ -112,17 +113,23 @@ export default function SablonDetayPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center" style={{ height: 'calc(100vh - 64px)' }}>
+          <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full" />
+        </div>
       </div>
     )
   }
 
   if (!template) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
-        <p className="text-gray-500">Şablon bulunamadı</p>
-        <Link href="/sablonlar" className="mt-3 text-blue-600 hover:underline">Geri Dön</Link>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex flex-col items-center justify-center" style={{ height: 'calc(100vh - 64px)' }}>
+          <p className="text-gray-500">Şablon bulunamadı</p>
+          <Link href="/sablonlar" className="mt-3 text-blue-600 hover:underline">Geri Dön</Link>
+        </div>
       </div>
     )
   }
