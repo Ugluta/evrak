@@ -1,9 +1,10 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
-  ArrowLeft, Download, Trash2, Save, Copy, Check, FileText, Bot
+  ArrowLeft, Download, Trash2, Save, Copy, Check,
+  Bot, Share2, X, Link2,
 } from 'lucide-react'
 import { CATEGORY_LABELS, formatDate } from '@/lib/utils'
 
@@ -16,6 +17,7 @@ interface Document {
   status: string
   fieldValues: Record<string, string>
   isAiAssisted: boolean
+  shareToken?: string | null
   createdAt: string
   updatedAt: string
   template?: { title: string; slug: string } | null
@@ -29,6 +31,7 @@ const STATUS_LABELS: Record<string, string> = {
 export default function BelgeDetayPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
+  const sharePanelRef = useRef<HTMLDivElement>(null)
   const [doc, setDoc] = useState<Document | null>(null)
   const [loading, setLoading] = useState(true)
   const [editContent, setEditContent] = useState('')
@@ -36,6 +39,10 @@ export default function BelgeDetayPage() {
   const [copied, setCopied] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
+  const [shareUrl, setShareUrl] = useState<string | null>(null)
+  const [shareLoading, setShareLoading] = useState(false)
+  const [showSharePanel, setShowSharePanel] = useState(false)
+  const [shareCopied, setShareCopied] = useState(false)
 
   useEffect(() => {
     fetch(`/api/belgelerim/${id}`)
@@ -43,9 +50,22 @@ export default function BelgeDetayPage() {
       .then((data) => {
         setDoc(data)
         setEditContent(data.content || '')
+        if (data.shareToken) {
+          setShareUrl(`${window.location.origin}/paylasim/${data.shareToken}`)
+        }
         setLoading(false)
       })
   }, [id])
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (sharePanelRef.current && !sharePanelRef.current.contains(e.target as Node)) {
+        setShowSharePanel(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   const handleSave = async () => {
     setSaving(true)
@@ -91,6 +111,38 @@ export default function BelgeDetayPage() {
     } finally {
       setAiLoading(false)
     }
+  }
+
+  const handleShare = async () => {
+    if (shareUrl) {
+      setShowSharePanel(true)
+      return
+    }
+    setShareLoading(true)
+    try {
+      const res = await fetch(`/api/belgelerim/${id}/paylas`, { method: 'POST' })
+      const data = await res.json()
+      if (data.shareToken) {
+        const url = `${window.location.origin}/paylasim/${data.shareToken}`
+        setShareUrl(url)
+        setShowSharePanel(true)
+      }
+    } finally {
+      setShareLoading(false)
+    }
+  }
+
+  const handleRevokeShare = async () => {
+    await fetch(`/api/belgelerim/${id}/paylas`, { method: 'DELETE' })
+    setShareUrl(null)
+    setShowSharePanel(false)
+  }
+
+  const copyShareUrl = () => {
+    if (!shareUrl) return
+    navigator.clipboard.writeText(shareUrl)
+    setShareCopied(true)
+    setTimeout(() => setShareCopied(false), 2000)
   }
 
   if (loading) {
@@ -159,6 +211,52 @@ export default function BelgeDetayPage() {
             >
               <Download className="w-4 h-4" /> PDF İndir
             </a>
+            <div className="relative" ref={sharePanelRef}>
+              <button
+                onClick={handleShare}
+                disabled={shareLoading}
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors disabled:opacity-50 ${
+                  shareUrl
+                    ? 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {shareLoading
+                  ? <span className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                  : shareUrl ? <Link2 className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+                {shareUrl ? 'Paylaşımda' : 'Paylaş'}
+              </button>
+              {showSharePanel && shareUrl && (
+                <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl p-4 w-80 z-30">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-sm font-semibold text-gray-800">Paylaşım Linki</p>
+                    <button onClick={() => setShowSharePanel(false)} className="text-gray-400 hover:text-gray-600">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mb-2">Link 7 gün geçerlidir.</p>
+                  <div className="flex gap-2 mb-3">
+                    <input
+                      readOnly
+                      value={shareUrl}
+                      className="flex-1 text-xs bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-2 truncate focus:outline-none"
+                    />
+                    <button
+                      onClick={copyShareUrl}
+                      className="shrink-0 px-3 py-2 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      {shareCopied ? 'Kopyalandı!' : 'Kopyala'}
+                    </button>
+                  </div>
+                  <button
+                    onClick={handleRevokeShare}
+                    className="text-xs text-red-500 hover:text-red-700 hover:underline"
+                  >
+                    Paylaşımı Kaldır
+                  </button>
+                </div>
+              )}
+            </div>
             {isDirty && (
               <button
                 onClick={handleSave}
