@@ -84,8 +84,11 @@ export default function ProfilPage() {
 
   if (status === 'loading' || !profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center" style={{ height: 'calc(100vh - 64px)' }}>
+          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        </div>
       </div>
     )
   }
