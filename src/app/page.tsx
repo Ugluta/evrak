@@ -203,6 +203,8 @@ export default async function HomePage() {
             <Link href="/ocr" className="hover:text-white">OCR</Link>
             <Link href="/giris" className="hover:text-white">Giriş</Link>
             <Link href="/kayit" className="hover:text-white">Kayıt</Link>
+            <Link href="/kullanim-kosullari" className="hover:text-white">Kullanım Koşulları</Link>
+            <Link href="/gizlilik" className="hover:text-white">Gizlilik</Link>
           </div>
         </div>
       </footer>
