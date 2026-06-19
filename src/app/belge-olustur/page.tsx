@@ -33,7 +33,15 @@ export default function BelgeOlusturPage() {
     if (status === 'unauthenticated') router.push('/giris?next=/belge-olustur')
   }, [status, router])
 
-  if (status === 'loading' || status === 'unauthenticated') return null
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+      </div>
+    )
+  }
+
+  if (status === 'unauthenticated') return null
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault()
@@ -199,7 +207,7 @@ export default function BelgeOlusturPage() {
                 ) : (
                   <div className="flex flex-col items-center justify-center py-16 text-center">
                     <Sparkles className="w-10 h-10 text-purple-200 mb-3" />
-                    <p className="text-sm text-gray-400">Belge türünü ve başlığı seçip\n\"Belge Oluştur\" butonuna tıklayın</p>
+                    <p className="text-sm text-gray-400">Belge türünü ve başlığı seçip{'\n'}\"Belge Oluştur\" butonuna tıklayın</p>
                   </div>
                 )}
               </div>
@@ -211,7 +219,7 @@ export default function BelgeOlusturPage() {
                   className="w-full flex items-center justify-center gap-2 py-2.5 bg-green-600 text-white rounded-xl text-sm font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
                 >
                   <Save className="w-4 h-4" />
-                  {saving ? 'Kaydediliyor…' : 'Belgelerim'e Kaydet'}
+                  {saving ? 'Kaydediliyor…' : 'Belgelerim\'e Kaydet'}
                 </button>
               )}
             </div>
