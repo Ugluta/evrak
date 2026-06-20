@@ -3,7 +3,7 @@ import './globals.css'
 import { Providers } from '@/components/Providers'
 
 export const metadata: Metadata = {
-  title: { default: 'Evrak | Öğretmen Evrak', template: '%s | Öğretmen Evrak' },
+  title: { default: 'Evrak | 2e Döküman', template: '%s | 2e Döküman' },
   description: 'Okul yönetimi için resmi evrak şablonları ve belge oluşturma platformu',
 }
 

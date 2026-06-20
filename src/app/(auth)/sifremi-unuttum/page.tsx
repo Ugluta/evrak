@@ -22,7 +22,7 @@ export default function SifremiUnuttumPage() {
       <div className="bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-3">
-            <span className="text-white text-xl font-bold">E</span>
+            <span className="text-white text-xl font-bold">2</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Şifremi Unuttum</h1>
           <p className="text-gray-500 text-sm mt-1">

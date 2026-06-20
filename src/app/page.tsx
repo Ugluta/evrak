@@ -194,9 +194,9 @@ export default async function HomePage() {
             <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
               <FileText className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="font-bold text-white text-sm">Öğretmen Evrak</span>
+            <span className="font-bold text-white text-sm">2e Döküman</span>
           </div>
-          <p className="text-xs">© {new Date().getFullYear()} Öğretmen Evrak. Tüm hakları saklıdır.</p>
+          <p className="text-xs">© {new Date().getFullYear()} 2e Döküman. Tüm hakları saklıdır.</p>
           <div className="flex items-center gap-4 text-xs">
             <Link href="/sablonlar" className="hover:text-white">Şablonlar</Link>
             <Link href="/belge-olustur" className="hover:text-white">AI Belge</Link>
