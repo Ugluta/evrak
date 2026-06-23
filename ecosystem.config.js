@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: '2edokuman',
+    name: '2eevrak',
     script: 'node_modules/.bin/next',
     args: 'start --port 3001',
     cwd: './',
