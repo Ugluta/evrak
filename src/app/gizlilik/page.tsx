@@ -1,15 +1,15 @@
-import { Header } from '@/components/Header'
+import { ServerHeader } from '@/components/ServerHeader'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Gizlilik Politikası — 2e Döküman',
-  description: '2e Döküman KVKK kapsamındaki kişisel veri işleme politikası.',
+  title: 'Gizlilik Politikası — 2e Evrak',
+  description: '2e Evrak KVKK kapsamındaki kişisel veri işleme politikası.',
 }
 
 export default function GizlilikPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <ServerHeader />
       <main>
         <div className="max-w-3xl mx-auto px-4 py-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Gizlilik Politikası</h1>
@@ -20,9 +20,9 @@ export default function GizlilikPage() {
               <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Veri Sorumlusu</h2>
               <p>
                 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında veri sorumlusu
-                2e Döküman'dır. Sorularınız için{' '}
-                <a href="mailto:destek@2edokuman.com" className="text-blue-600 hover:underline">
-                  destek@2edokuman.com
+                2e Evrak'tır. Sorularınız için{' '}
+                <a href="mailto:destek@ikie.net" className="text-blue-600 hover:underline">
+                  destek@ikie.net
                 </a>{' '}
                 adresiyle iletişime geçebilirsiniz.
               </p>
@@ -88,8 +88,8 @@ export default function GizlilikPage() {
               </ul>
               <p className="mt-3">
                 Haklarınızı kullanmak için{' '}
-                <a href="mailto:destek@2edokuman.com" className="text-blue-600 hover:underline">
-                  destek@2edokuman.com
+                <a href="mailto:destek@ikie.net" className="text-blue-600 hover:underline">
+                  destek@ikie.net
                 </a>{' '}
                 adresine yazabilirsiniz.
               </p>

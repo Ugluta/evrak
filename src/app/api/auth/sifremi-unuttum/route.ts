@@ -11,7 +11,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
     return
   }
 
-  const from = process.env.EMAIL_FROM ?? '2e Döküman <noreply@2edokuman.com>'
+  const from = process.env.EMAIL_FROM ?? '2e Evrak <noreply@ikie.net>'
 
   const html = `
     <!DOCTYPE html>
@@ -38,7 +38,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
         </p>
         <hr style="border: none; border-top: 1px solid #f3f4f6; margin: 24px 0;" />
         <p style="color: #9ca3af; font-size: 12px; text-align: center; margin: 0;">
-          2e Döküman — <a href="${process.env.NEXTAUTH_URL}" style="color: #9ca3af;">2edokuman.com</a>
+          2e Evrak — <a href="${process.env.NEXTAUTH_URL}" style="color: #9ca3af;">ikie.net</a>
         </p>
       </div>
     </body>
@@ -48,7 +48,7 @@ async function sendPasswordResetEmail(to: string, resetUrl: string) {
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from, to: [to], subject: 'Şifre Sıfırlama — 2e Döküman', html }),
+    body: JSON.stringify({ from, to: [to], subject: 'Şifre Sıfırlama — 2e Evrak', html }),
   })
 }
 

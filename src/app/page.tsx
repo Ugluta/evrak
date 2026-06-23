@@ -1,7 +1,7 @@
 import { db } from '@/lib/db'
 import { auth } from '@/lib/auth'
 import Link from 'next/link'
-import { Header } from '@/components/Header'
+import { ServerHeader } from '@/components/ServerHeader'
 import { FavoriteButton } from '@/components/FavoriteButton'
 import { BookOpen, FileText, ArrowRight, Sparkles, Shield, Zap, ScanText } from 'lucide-react'
 import { CATEGORY_LABELS } from '@/lib/utils'
@@ -40,7 +40,7 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <ServerHeader />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20 px-4">
@@ -116,7 +116,6 @@ export default async function HomePage() {
                 Hemen Dene <ArrowRight className="w-4 h-4" />
               </span>
             </Link>
-
             <Link href="/ocr"
               className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-700 p-7 text-white hover:shadow-xl transition-all">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10" />
@@ -194,9 +193,9 @@ export default async function HomePage() {
             <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
               <FileText className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="font-bold text-white text-sm">2e Döküman</span>
+            <span className="font-bold text-white text-sm">2e Evrak</span>
           </div>
-          <p className="text-xs">© {new Date().getFullYear()} 2e Döküman. Tüm hakları saklıdır.</p>
+          <p className="text-xs">© {new Date().getFullYear()} 2e Evrak. Tüm hakları saklıdır.</p>
           <div className="flex items-center gap-4 text-xs">
             <Link href="/sablonlar" className="hover:text-white">Şablonlar</Link>
             <Link href="/belge-olustur" className="hover:text-white">AI Belge</Link>

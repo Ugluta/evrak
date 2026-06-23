@@ -58,6 +58,14 @@ model VerificationToken {
   @@map("verification_tokens")
 }
 
+model Setting {
+  key       String   @id
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
 model Template {
   id          String           @id @default(cuid())
   title       String

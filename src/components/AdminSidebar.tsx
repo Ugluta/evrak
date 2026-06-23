@@ -4,14 +4,15 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import {
-  LayoutDashboard, FileText, BookOpen, Users, LogOut,
+  LayoutDashboard, FileText, BookOpen, Users, LogOut, Settings,
 } from 'lucide-react'
 
 const navItems = [
-  { href: '/admin',              label: 'Genel Bakış',  icon: LayoutDashboard, exact: true },
-  { href: '/admin/sablonlar',   label: 'Şablonlar',     icon: BookOpen },
-  { href: '/admin/belgeler',    label: 'Belgeler',      icon: FileText },
+  { href: '/admin',               label: 'Genel Bakış',  icon: LayoutDashboard, exact: true },
+  { href: '/admin/sablonlar',    label: 'Şablonlar',     icon: BookOpen },
+  { href: '/admin/belgeler',     label: 'Belgeler',      icon: FileText },
   { href: '/admin/kullanicilar', label: 'Kullanıcılar',  icon: Users },
+  { href: '/admin/ayarlar',     label: 'Ayarlar',       icon: Settings },
 ]
 
 export function AdminSidebar() {
@@ -29,7 +30,7 @@ export function AdminSidebar() {
           <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:bg-blue-500 transition-colors">
             2
           </div>
-          <span className="font-semibold text-white text-sm">2e Döküman</span>
+          <span className="font-semibold text-white text-sm">2e Evrak</span>
         </Link>
       </div>
 

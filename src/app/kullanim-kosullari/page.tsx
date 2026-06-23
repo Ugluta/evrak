@@ -1,15 +1,15 @@
-import { Header } from '@/components/Header'
+import { ServerHeader } from '@/components/ServerHeader'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Kullanım Koşulları — 2e Döküman',
-  description: '2e Döküman platformu kullanım koşulları ve hizmet şartları.',
+  title: 'Kullanım Koşulları — 2e Evrak',
+  description: '2e Evrak platformu kullanım koşulları ve hizmet şartları.',
 }
 
 export default function KullanimKosullariPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <ServerHeader />
       <main>
         <div className="max-w-3xl mx-auto px-4 py-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Kullanım Koşulları</h1>
@@ -19,7 +19,7 @@ export default function KullanimKosullariPage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">1. Kabul</h2>
               <p>
-                2e Döküman platformuna erişerek veya hizmetlerimizi kullanarak bu Kullanım
+                2e Evrak platformuna erişerek veya hizmetlerimizi kullanarak bu Kullanım
                 Koşullarını kabul etmiş sayılırsınız. Kabul etmiyorsanız platformu kullanmayınız.
               </p>
             </section>
@@ -27,7 +27,7 @@ export default function KullanimKosullariPage() {
             <section>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">2. Hizmet Tanımı</h2>
               <p>
-                2e Döküman, öğretmenlerin ve okul personelinin resmi evrak ve belgelerini
+                2e Evrak, öğretmenlerin ve okul personelinin resmi evrak ve belgelerini
                 şablonlar aracılığıyla veya yapay zeka desteğiyle oluşturabildiği, yönetip
                 paylaşabildiği bir SaaS platformudur.
               </p>
@@ -106,8 +106,8 @@ export default function KullanimKosullariPage() {
               <h2 className="text-xl font-semibold text-gray-900 mb-3">10. İletişim</h2>
               <p>
                 Kullanım koşullarına ilişkin sorularınız için{' '}
-                <a href="mailto:destek@2edokuman.com" className="text-blue-600 hover:underline">
-                  destek@2edokuman.com
+                <a href="mailto:destek@ikie.net" className="text-blue-600 hover:underline">
+                  destek@ikie.net
                 </a>{' '}
                 adresine yazabilirsiniz.
               </p>

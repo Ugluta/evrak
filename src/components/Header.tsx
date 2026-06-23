@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { FileText, User, LogOut, ChevronDown, Heart, ScanText, Sparkles, Menu, X } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 
-export function Header() {
+export function Header({ siteName = '2e Evrak' }: { siteName?: string }) {
   const { data: session } = useSession()
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -35,6 +35,9 @@ export function Header() {
     (session?.user as { role?: string })?.role === 'SUPER_ADMIN' ||
     (session?.user as { role?: string })?.role === 'ADMIN'
 
+  const [first, ...rest] = siteName.split(' ')
+  const second = rest.join(' ')
+
   return (
     <header
       className={`bg-white sticky top-0 z-50 transition-all duration-200 ${
@@ -51,7 +54,7 @@ export function Header() {
               <path d="M8 10h14M8 15h9M8 20h11" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
             </svg>
             <span className="text-[17px] font-semibold tracking-tight text-gray-900 leading-none">
-              2e<span className="text-blue-600"> Döküman</span>
+              {first}{second && <span className="text-blue-600"> {second}</span>}
             </span>
           </Link>
 
