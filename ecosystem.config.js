@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: '2eevrak',
     script: 'node_modules/.bin/next',
-    args: 'start --port 3001',
+    args: 'start --port 3030',
     cwd: './',
     instances: 1,
     autorestart: true,
@@ -10,7 +10,7 @@ module.exports = {
     max_memory_restart: '512M',
     env: {
       NODE_ENV: 'production',
-      PORT: 3001,
+      PORT: 3030,
     },
   }],
 }
