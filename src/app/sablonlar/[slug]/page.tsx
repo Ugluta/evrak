@@ -218,7 +218,7 @@ export default function SablonDetayPage() {
           <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm min-h-64 font-mono text-sm whitespace-pre-wrap text-gray-800 leading-relaxed">
             {preview}
           </div>
-          <p className="text-xs text-gray-400 mt-2">Doldurulmamış alanlar \{\{alan\_adı\}\} olarak görünür</p>
+          <p className="text-xs text-gray-400 mt-2">Doldurulmamış alanlar {'{{alan_adı}}'} olarak görünür</p>
         </div>
       </div>
     </div>
