@@ -1,9 +1,17 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
+import { Document, Font, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 import React from 'react'
+
+Font.register({
+  family: 'NotoSans',
+  fonts: [
+    { src: 'https://fonts.gstatic.com/s/notosans/v36/o-0IIpQlx3QUlC5A4PNjXhFVZNyB1Wk.ttf', fontWeight: 400 },
+    { src: 'https://fonts.gstatic.com/s/notosans/v36/o-0NIpQlx3QUlC5A4PNb91ZSMULzp-DkFw.ttf', fontWeight: 700 },
+  ],
+})
 
 const styles = StyleSheet.create({
   page: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'NotoSans',
     paddingTop: 72,
     paddingBottom: 72,
     paddingHorizontal: 72,
@@ -18,7 +26,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'NotoSans',
+    fontWeight: 700,
     textAlign: 'center',
     color: '#111827',
     marginBottom: 8,

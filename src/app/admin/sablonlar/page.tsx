@@ -2,6 +2,7 @@ import { db } from '@/lib/db'
 import Link from 'next/link'
 import { BookOpen, Plus, Edit } from 'lucide-react'
 import { CATEGORY_LABELS } from '@/lib/utils'
+import { KlonaButon } from '@/components/KlonaButon'
 
 export default async function AdminSablonlarPage() {
   const templates = await db.template.findMany({
@@ -45,6 +46,7 @@ export default async function AdminSablonlarPage() {
               <span className={`text-xs px-2 py-0.5 rounded-full ${
                 t.isPublic ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'
               }`}>{t.isPublic ? 'Herkese Açık' : 'Gizli'}</span>
+              <KlonaButon id={t.id} />
               <Link href={`/admin/sablonlar/${t.id}`}
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                 <Edit className="w-3.5 h-3.5" /> Düzenle

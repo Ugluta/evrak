@@ -124,3 +124,14 @@ model Favorite {
 
   @@unique([userId, templateId])
 }
+
+model AiUsage {
+  id        String   @id @default(cuid())
+  userId    String
+  date      String
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+  @@index([userId])
+}

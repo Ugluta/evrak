@@ -38,6 +38,7 @@ export default function SablonDetayPage() {
   const [preview, setPreview] = useState('')
   const [saving, setSaving] = useState(false)
   const [aiLoading, setAiLoading] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     fetch(`/api/sablonlar/${slug}`)
@@ -89,6 +90,19 @@ export default function SablonDetayPage() {
 
   async function handleSave() {
     if (!template) return
+
+    const newErrors: Record<string, string> = {}
+    template.fields.forEach((f) => {
+      if (f.required && !values[f.name]?.trim()) {
+        newErrors[f.name] = `${f.label} zorunludur`
+      }
+    })
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+    setErrors({})
+
     setSaving(true)
     try {
       const res = await fetch('/api/belgelerim', {
@@ -197,7 +211,7 @@ export default function SablonDetayPage() {
                   onChange={(e) => handleChange(field.name, e.target.value)}
                   rows={4}
                   placeholder={field.placeholder}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                  className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm ${errors[field.name] ? 'border-red-400 focus:ring-red-400' : 'border-gray-300'}`}
                 />
               ) : (
                 <input
@@ -205,8 +219,11 @@ export default function SablonDetayPage() {
                   value={values[field.name] || ''}
                   onChange={(e) => handleChange(field.name, e.target.value)}
                   placeholder={field.placeholder}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  className={`w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${errors[field.name] ? 'border-red-400 focus:ring-red-400' : 'border-gray-300'}`}
                 />
+              )}
+              {errors[field.name] && (
+                <p className="text-red-500 text-xs mt-1">{errors[field.name]}</p>
               )}
             </div>
           ))}
