@@ -3,35 +3,9 @@ import { auth } from '@/lib/auth'
 import {
   BookOpen, FileText, Users, Sparkles,
   TrendingUp, ArrowUpRight, Clock, Star,
-  AlertCircle, PlusCircle, Upload,
+  PlusCircle, Upload, ChevronRight,
 } from 'lucide-react'
 import Link from 'next/link'
-
-function StatCard({
-  label, value, sub, icon: Icon, color, href,
-}: {
-  label: string
-  value: number | string
-  sub?: string
-  icon: React.ElementType
-  color: string
-  href?: string
-}) {
-  const inner = (
-    <div className={`bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-all group relative overflow-hidden`}>
-      <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${color}`}>
-        <Icon className="w-5 h-5" />
-      </div>
-      <p className="text-2xl font-bold text-gray-900 leading-none">{value}</p>
-      <p className="text-sm text-gray-500 mt-1.5 font-medium">{label}</p>
-      {sub && <p className="text-xs text-gray-400 mt-1">{sub}</p>}
-      {href && (
-        <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-blue-500 transition-colors absolute top-4 right-4" />
-      )}
-    </div>
-  )
-  return href ? <Link href={href}>{inner}</Link> : inner
-}
 
 export default async function AdminPage() {
   const session = await auth()
@@ -65,117 +39,122 @@ export default async function AdminPage() {
     }),
     db.template.findMany({
       orderBy: { useCount: 'desc' },
-      take: 4,
+      take: 5,
       select: { title: true, useCount: true, slug: true },
     }),
   ])
 
   const aiCount = aiToday._sum.count ?? 0
 
-  const stats = [
-    {
-      label: 'Toplam Şablon',
-      value: templateCount,
-      sub: 'aktif şablon',
-      icon: BookOpen,
-      color: 'bg-blue-50 text-blue-600',
-      href: '/admin/sablonlar',
-    },
-    {
-      label: 'Toplam Belge',
-      value: documentCount,
-      sub: `${docsThisMonth} bu ay`,
-      icon: FileText,
-      color: 'bg-violet-50 text-violet-600',
-      href: '/admin/belgeler',
-    },
-    {
-      label: 'Kullanıcılar',
-      value: userCount,
-      sub: 'kayıtlı üye',
-      icon: Users,
-      color: 'bg-emerald-50 text-emerald-600',
-      href: '/admin/kullanicilar',
-    },
-    {
-      label: 'AI İstek (Bugün)',
-      value: aiCount,
-      sub: 'Claude API isteği',
-      icon: Sparkles,
-      color: 'bg-amber-50 text-amber-600',
-      href: '/admin/ai-kullanim',
-    },
-  ]
-
-  const quickActions = [
-    { label: 'Yeni Şablon', icon: PlusCircle, href: '/admin/sablonlar/yeni', color: 'bg-blue-600 hover:bg-blue-700 text-white' },
-    { label: 'Dosya Yükle', icon: Upload, href: '/admin/kutuphane/yukle', color: 'bg-violet-600 hover:bg-violet-700 text-white' },
-    { label: 'İstatistikler', icon: TrendingUp, href: '/admin/istatistikler', color: 'bg-emerald-600 hover:bg-emerald-700 text-white' },
-  ]
-
   return (
-    <div className="space-y-7 max-w-7xl">
+    <div className="space-y-6">
 
-      {/* Welcome banner */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 text-white flex items-center justify-between">
+      {/* Welcome + quick actions */}
+      <div className="flex items-center justify-between">
         <div>
-          <p className="text-blue-100 text-sm font-medium mb-1">Hoş geldin 👋</p>
-          <h2 className="text-2xl font-bold">{firstName}</h2>
-          <p className="text-blue-200 text-sm mt-1">Öğretmen Evrak yönetim paneline hoş geldiniz.</p>
+          <h2 className="text-xl font-bold text-gray-900">Hoş geldin, {firstName} 👋</h2>
+          <p className="text-sm text-gray-400 mt-0.5">Öğretmen Evrak yönetim paneli</p>
         </div>
-        <div className="hidden md:flex flex-col items-end gap-2">
-          {quickActions.map(a => (
-            <Link
-              key={a.href}
-              href={a.href}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors bg-white/20 hover:bg-white/30 text-white`}
-            >
-              <a.icon className="w-4 h-4" />
-              {a.label}
-            </Link>
-          ))}
+        <div className="flex gap-2">
+          <Link href="/admin/sablonlar/yeni"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 transition-colors">
+            <PlusCircle className="w-4 h-4" /> Yeni Şablon
+          </Link>
+          <Link href="/admin/kutuphane/yukle"
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+            <Upload className="w-4 h-4" /> Dosya Yükle
+          </Link>
         </div>
       </div>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map(s => (
-          <StatCard key={s.label} {...s} />
-        ))}
+      {/* Stats row */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <Link href="/admin/sablonlar" className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-sm transition-all group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-blue-600" />
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-blue-500 transition-colors" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900">{templateCount}</p>
+          <p className="text-sm text-gray-500 mt-1 font-medium">Şablon</p>
+          <p className="text-xs text-gray-400 mt-0.5">toplam aktif</p>
+        </Link>
+
+        <Link href="/admin/belgeler" className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-sm transition-all group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center">
+              <FileText className="w-5 h-5 text-violet-600" />
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-violet-500 transition-colors" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900">{documentCount}</p>
+          <p className="text-sm text-gray-500 mt-1 font-medium">Belge</p>
+          <p className="text-xs text-gray-400 mt-0.5">{docsThisMonth} bu ay</p>
+        </Link>
+
+        <Link href="/admin/kullanicilar" className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-sm transition-all group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
+              <Users className="w-5 h-5 text-emerald-600" />
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-emerald-500 transition-colors" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900">{userCount}</p>
+          <p className="text-sm text-gray-500 mt-1 font-medium">Kullanıcı</p>
+          <p className="text-xs text-gray-400 mt-0.5">kayıtlı üye</p>
+        </Link>
+
+        <Link href="/admin/ai-kullanim" className="bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-sm transition-all group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-amber-600" />
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-gray-300 group-hover:text-amber-500 transition-colors" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900">{aiCount}</p>
+          <p className="text-sm text-gray-500 mt-1 font-medium">AI İstek</p>
+          <p className="text-xs text-gray-400 mt-0.5">bugün</p>
+        </Link>
       </div>
 
-      {/* Main content: recent docs + sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      {/* Main grid: recent docs + right column */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
 
-        {/* Recent documents */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        {/* Recent documents — 3/5 */}
+        <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 flex flex-col">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-50">
-            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-gray-400" /> Son Belgeler
+            <h3 className="font-semibold text-gray-900 text-sm flex items-center gap-2">
+              <Clock className="w-4 h-4 text-gray-400" /> Son Oluşturulan Belgeler
             </h3>
-            <Link href="/admin/belgeler" className="text-xs text-blue-600 hover:underline font-medium">
-              Tümü →
+            <Link href="/admin/belgeler"
+              className="text-xs text-blue-600 font-medium hover:underline flex items-center gap-0.5">
+              Tümü <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-gray-50 flex-1">
             {recentDocs.length === 0 ? (
-              <div className="py-10 text-center text-gray-400">
-                <FileText className="w-8 h-8 mx-auto mb-2 opacity-30" />
-                <p className="text-sm">Henüz belge yok</p>
+              <div className="flex flex-col items-center justify-center py-14 text-gray-400">
+                <FileText className="w-10 h-10 mb-3 opacity-20" />
+                <p className="text-sm">Henüz belge oluşturulmadı</p>
+                <Link href="/admin/sablonlar" className="mt-2 text-xs text-blue-500 hover:underline">
+                  Şablon ekle →
+                </Link>
               </div>
             ) : (
               recentDocs.map((doc) => (
-                <div key={doc.id} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-colors">
+                <div key={doc.id} className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors">
                   <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
                     <FileText className="w-4 h-4 text-blue-500" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate">{doc.title}</p>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      {doc.author.name} {doc.template ? `· ${doc.template.title}` : ''}
+                      {doc.author.name}
+                      {doc.template ? ` · ${doc.template.title}` : ''}
                     </p>
                   </div>
-                  <span className="text-xs text-gray-400 shrink-0">
+                  <span className="text-xs text-gray-400 shrink-0 tabular-nums">
                     {new Date(doc.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
@@ -184,39 +163,27 @@ export default async function AdminPage() {
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="space-y-4">
-
-          {/* Duyuru kartı */}
-          <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <AlertCircle className="w-4 h-4 text-amber-500" />
-              <p className="font-semibold text-amber-800 text-sm">Duyurular</p>
-            </div>
-            <p className="text-sm text-amber-700">Yeni duyuru sistemi geliştiriliyor. Kullanıcılara bildirim gönderme özelliği yakında aktif olacak.</p>
-            <Link href="/admin/duyurular" className="inline-flex items-center gap-1 mt-3 text-xs text-amber-700 font-semibold hover:underline">
-              Duyurular <ArrowUpRight className="w-3 h-3" />
-            </Link>
-          </div>
+        {/* Right column — 2/5 */}
+        <div className="lg:col-span-2 flex flex-col gap-4">
 
           {/* Top templates */}
-          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-2xl border border-gray-100 flex-1">
             <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-50">
               <Star className="w-4 h-4 text-amber-400" />
-              <h3 className="font-semibold text-gray-900 text-sm">En Popüler Şablonlar</h3>
+              <h3 className="font-semibold text-gray-900 text-sm">En Çok Kullanılan</h3>
             </div>
             <div className="divide-y divide-gray-50">
               {topTemplates.length === 0 ? (
-                <p className="text-sm text-gray-400 px-5 py-4">Henüz veri yok</p>
+                <p className="text-sm text-gray-400 px-5 py-5">Henüz veri yok</p>
               ) : (
                 topTemplates.map((t, i) => (
                   <div key={t.slug} className="flex items-center gap-3 px-5 py-3">
-                    <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                       i === 0 ? 'bg-amber-100 text-amber-700' :
                       i === 1 ? 'bg-gray-100 text-gray-600' :
-                      'bg-gray-50 text-gray-500'
+                      'bg-gray-50 text-gray-400'
                     }`}>{i + 1}</span>
-                    <span className="flex-1 text-sm text-gray-800 truncate">{t.title}</span>
+                    <span className="flex-1 text-sm text-gray-700 truncate">{t.title}</span>
                     <span className="text-xs font-semibold text-blue-600 shrink-0">{t.useCount}</span>
                   </div>
                 ))
@@ -224,26 +191,26 @@ export default async function AdminPage() {
             </div>
           </div>
 
-          {/* Bu ay özet */}
+          {/* Monthly summary */}
           <div className="bg-white rounded-2xl border border-gray-100 p-5">
-            <p className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-500" /> Bu Ay Özet
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Yeni Belgeler</span>
-                <span className="font-semibold text-gray-900">{docsThisMonth}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">AI Kullanımı (bugün)</span>
-                <span className="font-semibold text-gray-900">{aiCount}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Toplam Kullanıcı</span>
-                <span className="font-semibold text-gray-900">{userCount}</span>
-              </div>
+            <div className="flex items-center gap-2 mb-4">
+              <TrendingUp className="w-4 h-4 text-emerald-500" />
+              <h3 className="font-semibold text-gray-900 text-sm">Bu Ay</h3>
+            </div>
+            <div className="space-y-3">
+              {[
+                { label: 'Yeni Belge', value: docsThisMonth },
+                { label: 'AI Kullanımı (bugün)', value: aiCount },
+                { label: 'Toplam Kullanıcı', value: userCount },
+              ].map(item => (
+                <div key={item.label} className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">{item.label}</span>
+                  <span className="text-sm font-bold text-gray-900 tabular-nums">{item.value}</span>
+                </div>
+              ))}
             </div>
           </div>
+
         </div>
       </div>
     </div>
