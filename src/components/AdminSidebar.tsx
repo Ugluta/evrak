@@ -2,10 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
 import { useState } from 'react'
 import {
-  LayoutDashboard, FileText, BookOpen, Users, LogOut, Settings,
+  LayoutDashboard, FileText, BookOpen, Users, Settings,
   ChevronDown, ChevronRight, Sparkles, Shield, Package, BarChart3,
   Library, UserCog, Crown, PlusCircle, Upload, Gauge, Bell,
   FolderOpen, Scale,
@@ -204,21 +203,17 @@ export function AdminSidebar({ userRole, userName }: { userRole: Role; userName?
         })}
       </nav>
 
-      {/* User + sign out */}
-      <div className="p-3 border-t border-slate-800 shrink-0 space-y-1">
-        {userName && (
-          <div className="px-3 py-2 rounded-lg bg-slate-800/60 mb-1">
-            <p className="text-xs text-slate-100 font-medium truncate">{userName}</p>
-            <p className="text-xs text-slate-500 mt-0.5">{userRole.replace(/_/g, ' ')}</p>
+      {/* Bottom: user info only (signout is in header dropdown) */}
+      <div className="p-3 border-t border-slate-800 shrink-0">
+        <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-slate-800/40">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-xs font-bold shrink-0">
+            {(userName ?? 'A').slice(0, 2).toUpperCase()}
           </div>
-        )}
-        <button
-          onClick={() => signOut({ callbackUrl: '/giris' })}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-red-900/30 hover:text-red-400 transition-colors"
-        >
-          <LogOut className="w-4 h-4 shrink-0" />
-          Çıkış Yap
-        </button>
+          <div className="min-w-0">
+            <p className="text-xs text-slate-100 font-medium truncate">{userName ?? 'Admin'}</p>
+            <p className="text-xs text-slate-500">{userRole.replace(/_/g, ' ')}</p>
+          </div>
+        </div>
       </div>
     </aside>
   )
