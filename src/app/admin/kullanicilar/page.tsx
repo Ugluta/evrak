@@ -1,6 +1,7 @@
 import { db } from '@/lib/db'
-import { Users } from 'lucide-react'
+import { Users, ChevronRight } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
+import Link from 'next/link'
 
 const ROLE_DISPLAY: Record<string, { label: string; cls: string }> = {
   SUPER_ADMIN: { label: 'Süper Admin',   cls: 'bg-red-50 text-red-700' },
@@ -33,7 +34,8 @@ export default async function AdminKullanicilarPage() {
           const role = ROLE_DISPLAY[u.role] ?? { label: u.role, cls: 'bg-gray-100 text-gray-500' }
           const initials = (u.name ?? u.email).slice(0, 2).toUpperCase()
           return (
-            <div key={u.id} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+            <Link key={u.id} href={`/admin/kullanicilar/${u.id}`}
+              className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors group">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
                   <span className="text-xs font-bold text-blue-700">{initials}</span>
@@ -50,8 +52,9 @@ export default async function AdminKullanicilarPage() {
                 </div>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${role.cls}`}>{role.label}</span>
                 <span className="text-xs text-gray-400 hidden md:block">{formatDate(u.createdAt)}</span>
+                <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-500 transition-colors" />
               </div>
-            </div>
+            </Link>
           )
         })}
         {users.length === 0 && (
