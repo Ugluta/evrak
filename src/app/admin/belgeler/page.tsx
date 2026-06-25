@@ -30,11 +30,11 @@ export default async function AdminBelgelerPage() {
         <p className="text-gray-500 text-sm">{belgeler.length} belge</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 divide-y divide-gray-50">
-        {belgeler.map((b) => {
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        {belgeler.map((b, i) => {
           const s = STATUS_MAP[b.status] ?? { label: b.status, cls: 'bg-gray-100 text-gray-500' }
           return (
-            <div key={b.id} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50">
+            <div key={b.id} className={`flex items-center justify-between px-4 py-3 transition-colors hover:bg-blue-50/40 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}`}>
               <div className="flex items-center gap-3 min-w-0">
                 <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
                   <FileText className="w-4 h-4 text-blue-600" />

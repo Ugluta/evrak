@@ -65,9 +65,9 @@ export default async function AdminSablonlarPage({
       </div>
 
       {/* Templates list */}
-      <div className="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-50">
-        {templates.map((t) => (
-          <div key={t.id} className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        {templates.map((t, i) => (
+          <div key={t.id} className={`flex items-center justify-between px-4 py-3 transition-colors hover:bg-blue-50/40 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}`}>
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
                 <BookOpen className="w-4 h-4 text-blue-600" />

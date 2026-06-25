@@ -29,13 +29,13 @@ export default async function AdminKullanicilarPage() {
         <p className="text-gray-500 text-sm">{users.length} kullanıcı</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 divide-y divide-gray-50">
-        {users.map((u) => {
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        {users.map((u, i) => {
           const role = ROLE_DISPLAY[u.role] ?? { label: u.role, cls: 'bg-gray-100 text-gray-500' }
           const initials = (u.name ?? u.email).slice(0, 2).toUpperCase()
           return (
             <Link key={u.id} href={`/admin/kullanicilar/${u.id}`}
-              className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors group">
+              className={`flex items-center justify-between px-4 py-3 transition-colors hover:bg-blue-50/40 group ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}`}>
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
                   <span className="text-xs font-bold text-blue-700">{initials}</span>
