@@ -40,20 +40,20 @@ export function Header({ siteName = '2e Evrak' }: { siteName?: string }) {
 
   return (
     <header
-      className={`bg-white sticky top-0 z-50 transition-all duration-200 ${
-        scrolled ? 'shadow-[0_2px_16px_rgba(0,0,0,0.08)]' : 'border-b border-gray-100'
+      className={`bg-white sticky top-0 z-50 transition-all duration-200 border-b-2 ${
+        scrolled ? 'border-gray-200 shadow-[0_2px_16px_rgba(0,0,0,0.10)]' : 'border-gray-200'
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
-        <div className="flex items-center h-16 gap-6">
+        <div className="flex items-center h-24 gap-6">
 
           {/* Logo */}
-          <Link href="/" className="shrink-0 flex items-center gap-2.5">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+          <Link href="/" className="shrink-0 flex items-center gap-3">
+            <svg width="38" height="38" viewBox="0 0 30 30" fill="none">
               <rect width="30" height="30" rx="8" fill="#1d4ed8" />
               <path d="M8 10h14M8 15h9M8 20h11" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
             </svg>
-            <span className="text-[17px] font-semibold tracking-tight text-gray-900 leading-none">
+            <span className="text-[19px] font-semibold tracking-tight text-gray-900 leading-none">
               {first}{second && <span className="text-blue-600"> {second}</span>}
             </span>
           </Link>
@@ -174,7 +174,7 @@ export function Header({ siteName = '2e Evrak' }: { siteName?: string }) {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-gray-100 bg-white">
+        <div className="md:hidden border-t-2 border-gray-200 bg-white">
           <div className="max-w-7xl mx-auto px-5 py-4 space-y-0.5">
             <Link href="/sablonlar" className="block h-10 px-3 flex items-center text-[14px] font-medium text-gray-700 hover:bg-gray-50 rounded-lg" onClick={() => setMobileOpen(false)}>
               Şablonlar
