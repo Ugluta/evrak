@@ -296,12 +296,12 @@ export default async function HomePage() {
               { icon: Users,       value: userCount,     label: 'Kayıtlı Kullanıcı',     color: 'text-purple-400' },
               { icon: TrendingUp,  value: '99%',         label: 'Kullanıcı Memnuniyeti', color: 'text-amber-400' },
             ].map(({ icon: Icon, value, label, color }) => (
-              <div key={label} className="text-center">
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/5 mb-3 ${color}`}>
+              <div key={label} className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-white/10 transition-colors">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/10 mb-4 ${color}`}>
                   <Icon className="w-6 h-6" />
                 </div>
                 <p className={`text-4xl font-extrabold ${color} tabular-nums`}>{value}</p>
-                <p className="text-slate-400 text-sm mt-1">{label}</p>
+                <p className="text-slate-400 text-sm mt-1.5">{label}</p>
               </div>
             ))}
           </div>
